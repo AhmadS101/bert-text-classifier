@@ -3,23 +3,25 @@ import torch
 import numpy as np
 import torch.nn as nn
 from torch.optim import AdamW
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 import constants
 import data_loader
-import model
+import model as model_module
 import trainer
 import helper
 
-criterion = nn.CrossEntropyLoss()
-train_dataloader, val_dataloader = data_loader.prepare_dataloader()
-model = model.BERTClassifier()
-loss_fn = helper.loss_fn(criterion)
-optimizer = helper.optimizer(model, criterion)
-save_checkpoint = helper.save_checkpoint()
-
 
 # training loop
-def train(train_dataloader, val_dataloader, epochs=constants.EPOCHS, start_epoch=0):
+def train(
+    model,
+    train_dataloader,
+    val_dataloader,
+    optimizer,
+    scheduler,
+    loss_fn,
+    epochs=constants.EPOCHS,
+    start_epoch=0,
+):
     torch.manual_seed(constants.RANDOM_SEED)
     np.random.seed(constants.RANDOM_SEED)
 
@@ -30,18 +32,27 @@ def train(train_dataloader, val_dataloader, epochs=constants.EPOCHS, start_epoch
     best_val_accuracy = 0
 
     for epoch in range(start_epoch, epochs):
-        train_loss = trainer.train_epoch(train_dataloader)
-        val_loss, val_accuracy = trainer.evaluate(val_dataloader)
+        print(f"\nEpoch {epoch + 1}/{epochs}")
+        train_loss = trainer.train_epoch(
+            model, train_dataloader, optimizer, scheduler, loss_fn
+        )
+        val_loss, val_accuracy = trainer.evaluate(model, val_dataloader, loss_fn)
 
         train_losses.append(train_loss)
         val_losses.append(val_loss)
         val_accuracies.append(val_accuracy)
+        print(
+            f"Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f} | Val Accuracy: {val_accuracy:.4f}"
+        )
 
         if val_accuracy > best_val_accuracy:
             best_val_accuracy = val_accuracy
             print(f"Best validation accuracy: {best_val_accuracy}")
 
-        save_checkpoint(model, optimizer, epoch, val_loss, constants.CHECKPOINT_PATH)
+        helper.save_checkpoint(
+            model, optimizer, epoch, val_loss, constants.CHECKPOINT_PATH
+        )
+
     print(f"\nTraining completed!")
     print(f"Best validation accuracy: {best_val_accuracy:.4f}")
 
@@ -87,6 +98,11 @@ def main():
         print("Failed to load dataset. Exiting.")
         return
 
+    print("Dataset loaded successfully")
+    print(f"Training samples: {len(train_df)} | Test samples: {len(test_df)}")
+    print(f"Labels: {id2label}")
+    print("-" * 50)
+
     # prepare data loaders
     print("\nPreparing data loaders...")
     train_dataloader, val_dataloader = data_loader.prepare_dataloader(
@@ -95,11 +111,23 @@ def main():
 
     # create model
     print("\nInitializing model...")
-    model = model.BERTClassifier()
+    model = model_module.BERTClassifier().to(constants.DEVICE)
+
+    # loss and optimizer
+    loss_fn = nn.CrossEntropyLoss()
+    optimizer = AdamW
+    total_steps = len(train_dataloader) * constants.EPOCHS
+    scheduler = get_linear_schedule_with_warmup(
+        optimizer,
+        num_warmup_steps=int(constants.WARMUP_RATIO * total_steps),
+        num_training_steps=total_steps,
+    )
 
     # train model
     print("\nStarting training...")
-    training_results = train()
+    training_results = train(
+        model, train_dataloader, val_dataloader, optimizer, scheduler, loss_fn
+    )
 
     print("\nTraining completed successfully!")
     print(f"Final validation accuracy: {training_results['val_accuracies'][-1]:.4f}")

@@ -4,11 +4,12 @@ import numpy as np
 import constants
 import model
 import data_loader
-from helper import optimizer, scheduler, loss_fn
+
+# from helper import optimizer, scheduler, loss_fn
 
 
 # train one epoch
-def train_epoch(train_dataloader):
+def train_epoch(model, train_dataloader, optimizer, scheduler, loss_fn):
     model.train()
     total_loss = 0.0
 
@@ -39,7 +40,7 @@ def train_epoch(train_dataloader):
 
 
 # evaluation fun
-def evaluate(val_dataloader):
+def evaluate(model, val_dataloader, loss_fn):
     model.eval()
     total_loss = 0.0
     all_predictions = []

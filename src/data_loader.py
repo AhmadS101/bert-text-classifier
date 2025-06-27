@@ -85,7 +85,7 @@ def prepare_dataloader(train_df, tokenizer):
     )
 
     train_dataset = ClfDataset(train_texts, train_labels, tokenizer)
-    val_dataset = ClfDataset(train_texts, train_labels, tokenizer)
+    val_dataset = ClfDataset(val_texts, val_labels, tokenizer)
 
     train_dataloader = DataLoader(
         train_dataset,

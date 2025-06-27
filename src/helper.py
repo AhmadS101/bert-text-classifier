@@ -1,7 +1,5 @@
 import os
 import torch
-import torch.nn as nn
-from transformers import get_linear_schedule_with_warmup
 import constants
 
 
@@ -29,33 +27,3 @@ def load_checkpoint(model, optimizer, filename):
     else:
         print("No checkpoint found — starting from scratch.")
         return 0
-
-
-# initiakize optimizer
-def optimizer(model, criterion):
-    optimizer = criterion(
-        model.parameters(),
-        lr=constants.LEARNING_RATE,
-        weight_decay=constants.WEIGHT_DECAY,
-    )
-
-    return optimizer
-
-
-# initiakize scheduler
-def scheduler(train_dataloader):
-    total_steps = len(train_dataloader) * constants.EPOCHS
-    scheduler = get_linear_schedule_with_warmup(
-        optimizer,
-        num_warmup_steps=int(constants.WARMUP_RATIO * total_steps),
-        num_training_steps=total_steps,
-    )
-
-    return scheduler
-
-
-# initiakize loss function
-def loss_fn(criterion):
-    loss_fn = criterion
-
-    return loss_fn
