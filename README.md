@@ -1,7 +1,7 @@
 # BERT Classifier Model 
 
 ## **Project Overview**
-This project implements a multi-class text classification model using **BERT**  as its base architecture. The model adds a **classification head**  ( neural network layer added on top of BERT that performs the final classification) on top of the pre-trained BERT base model to predict the correct class from input text sequences. The entire training process is implemented using **PyTorch**.
+This project implements a multi-class text classification model using [**BERT**](https://huggingface.co/google-bert/bert-base-uncased)  as its base architecture. The model adds a **classification head**  ( neural network layer added on top of BERT that performs the final classification) on top of the pre-trained BERT base model to predict the correct class from input text sequences. The entire training process is implemented using **PyTorch**.
 
 > [**Model Architecture**]
 > Input Text → BERT Tokenizer → BERT Base Model → Classification Head → Class Probabilities
