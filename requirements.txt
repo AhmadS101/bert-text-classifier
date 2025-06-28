@@ -1,0 +1,7 @@
+datasets==3.2.0
+numpy==2.3.1
+pandas==2.3.0
+scikit_learn==1.7.0
+torch==2.7.1+cpu
+tqdm==4.67.1
+transformers==4.48.2
