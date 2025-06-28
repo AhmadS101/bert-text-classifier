@@ -18,8 +18,8 @@ Using the [AG News](https://huggingface.co/datasets/fancyzhx/ag_news) news artic
 
 1. **Configuration Setup**
     - Define model (BERT base), dataset (AG News), and training parameters
-    - Set hyperparameters: MAX_LENGTH=512, BATCH_SIZE=32, LR=2e-5, EPOCHS=3
-    - Configure optimization: WEIGHT_DECAY=0.01, WARMUP_RATIO=0.1, MAX_GRAD_NORM=1.0
+    - Set hyperparameters
+    - Configure optimization
 2. **Data Preparation**    
     - Load dataset from Hugging Face and convert to DataFrame
     - Create label mappings (id2label and label2id)
@@ -28,7 +28,7 @@ Using the [AG News](https://huggingface.co/datasets/fancyzhx/ag_news) news artic
     - Prepare data for DataLoader with 32-sample batches
 4. **Model Architecture**
     - Build BERT classifier with dropout (0.3)
-    - Freeze embeddings and first 6 layers (109M frozen params)
+    - Freeze embeddings and first 6 layers (43M frozen params)
     - Train only remaining parameters
 5. **Training Setup**
     - Create train/evaluation functions
