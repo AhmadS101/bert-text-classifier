@@ -5,7 +5,7 @@ import tqdm
 import numpy as np
 import constants
 import data_loader
-import model
+import model as clf_model
 import helper
 from transformers import AutoTokenizer
 from sklearn.metrics import classification_report, confusion_matrix
@@ -54,7 +54,7 @@ def model_evaluation(
 
 def main():
     # Load your trained model and tokenizer
-    model = model.BERTClassifier().to(constants.DEVICE)
+    model = clf_model.BERTClassifier().to(constants.DEVICE)
     model.load_state_dict(torch.load("../model/bert_clf_model.ptrom"))
     tokenizer = AutoTokenizer.from_pretrained(constants.MODEL_NAME)
 
