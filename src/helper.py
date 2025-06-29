@@ -1,6 +1,8 @@
 import os
 import torch
 import constants
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 # save model
@@ -27,3 +29,45 @@ def load_checkpoint(model, optimizer, filename):
     else:
         print("No checkpoint found — starting from scratch.")
         return 0
+
+
+# print model preformance with test set
+def print_metrics(clf_report, conf_mat, id2label):
+    print(f"\nModel Accuracy: {clf_report['accuracy']:.2%}\n")
+
+    # Print per-class metrics
+    print(
+        "{:<15} {:<10} {:<10} {:<10}".format("Class", "Precision", "Recall", "F1-Score")
+    )
+    print("-" * 45)
+
+    for i, label in id2label.items():
+        print(
+            "{:<15} {:<10.2%} {:<10.2%} {:<10.2%}".format(
+                label,
+                clf_report[label]["precision"],
+                clf_report[label]["recall"],
+                clf_report[label]["f1-score"],
+            )
+        )
+
+    # Print confusion matrix
+    print("\nConfusion Matrix:")
+    print(conf_mat)
+
+
+# print model confusion matrix
+def plot_confusion_matrix(conf_mat, id2label):
+    """Visualize confusion matrix"""
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(
+        conf_mat,
+        annot=True,
+        fmt="d",
+        xticklabels=id2label.values(),
+        yticklabels=id2label.values(),
+    )
+    plt.title("Confusion Matrix")
+    plt.ylabel("True Label")
+    plt.xlabel("Predicted Label")
+    plt.show()
