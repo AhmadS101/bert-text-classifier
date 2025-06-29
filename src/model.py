@@ -2,7 +2,7 @@ import os
 import torch
 import torch.nn as nn
 from transformers import AutoModel
-import constants
+import src.constants as constants
 
 
 class BERTClassifier(nn.Module):
