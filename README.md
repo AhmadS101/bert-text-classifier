@@ -7,6 +7,10 @@ This project implements a multi-class text classification model using [**BERT**]
 > Input Text → BERT Tokenizer → BERT Base Model → Classification Head → Class Probabilities
 
 ---
+
+https://github.com/user-attachments/assets/dd6fb2f4-afdd-4c62-a678-66fcd01e59a5
+
+---
 ### **Dataset**
 Using the [AG News](https://huggingface.co/datasets/fancyzhx/ag_news) news articles  dataset from Hugging Face . 
 #### **Dataset Information**
@@ -33,3 +37,4 @@ Using the [AG News](https://huggingface.co/datasets/fancyzhx/ag_news) news artic
 5. **Training Setup**
     - Create train/evaluation functions
     - Configure optimizer with warmup
+
