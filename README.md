@@ -41,6 +41,7 @@ Using the [AG News](https://huggingface.co/datasets/fancyzhx/ag_news) news artic
 
 ## **Test Set Results over each class**
 <div align="center">
+
 **Model Accuracy:** 94.24%
 
 | Class     | Precision | Recall  | F1-Score |
