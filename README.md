@@ -40,7 +40,7 @@ Using the [AG News](https://huggingface.co/datasets/fancyzhx/ag_news) news artic
 
 
 ## **Test Set Results over each class**
-
+<div align="center">
 **Model Accuracy:** 94.24%
 
 | Class     | Precision | Recall  | F1-Score |
@@ -49,10 +49,11 @@ Using the [AG News](https://huggingface.co/datasets/fancyzhx/ag_news) news artic
 | Sports    | 98.74%    | 98.74%  | 98.74%   |
 | Business  | 92.08%    | 90.00%  | 91.03%   |
 | Sci/Tech  | 90.42%    | 92.84%  | 91.61%   |
-
+</div>
 
 ---
 ## **Usage**
+
 #### 1. Clone the repository
 ```
 https://github.com/AhmadS101/bert-text-classifier.git
